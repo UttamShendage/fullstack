@@ -1,0 +1,44 @@
+<div class="form-container">
+  <header class="header">
+    <h1>{{ isEditMode() ? 'Edit Item' : 'Add Item' }}</h1>
+    <a routerLink="/items" class="btn btn-secondary">Back to List</a>
+  </header>
+
+  @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Enter item name"
+        class="input"
+      />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <span class="validation-error">Name is required</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        placeholder="Enter description (optional)"
+        rows="4"
+        class="input"
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" routerLink="/items">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || loading()">
+        {{ loading() ? 'Saving...' : (isEditMode() ? 'Update' : 'Create') }}
+      </button>
+    </div>
+  </form>
+</div>
